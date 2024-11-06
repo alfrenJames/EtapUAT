@@ -1,0 +1,11 @@
+const express = require('express');
+const router = express.Router();
+const { login, register, getAllAdmins} = require('../controllers/adminController');
+// const { protect } = require('../middleware/authMiddleware');
+// router.use(protect);
+router.post('/login', login);
+router.post('/register', register);
+router.get('/', getAllAdmins);
+// router.put('/:id', updateAdmin);
+// router.get('/:id', getAdmin);
+module.exports = router;

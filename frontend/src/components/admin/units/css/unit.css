@@ -1,0 +1,23 @@
+
+.modal-content {
+    background-color: white;
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding inside the modal */
+    max-width: 500px; /* Maximum width of the modal */
+    width: 90%; /* Responsive width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    position: relative; /* Position relative for the close button */
+    margin: 0 auto;
+}
+
+.close {
+    position: absolute; /* Position the close button */
+    top: 10px; /* Distance from the top */
+    right: 15px; /* Distance from the right */
+    font-size: 24px; /* Size of the close button */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+h2 {
+    margin-top: 0; /* Remove top margin for the heading */
+}

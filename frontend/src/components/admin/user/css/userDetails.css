@@ -1,0 +1,40 @@
+.details-modal {
+    position: fixed; /* Fixed position to cover the entire screen */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent; /* Semi-transparent background */
+    display: flex; /* Use flexbox to center the modal */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    z-index: 1000; /* Ensure it appears above other content */
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Padding inside the modal */
+    max-width: 500px; /* Maximum width of the modal */
+    width: 90%; /* Responsive width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+    position: relative; /* Position relative for the close button */
+}
+
+.close {
+    position: absolute; /* Position the close button */
+    top: 10px; /* Distance from the top */
+    right: 15px; /* Distance from the right */
+    font-size: 24px; /* Size of the close button */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+h2 {
+    margin-top: 0; /* Remove top margin for the heading */
+}
+
+.id-image {
+    max-width: 100%; /* Responsive image */
+    height: auto; /* Maintain aspect ratio */
+    margin-top: 10px; /* Space above the image */
+}

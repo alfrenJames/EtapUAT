@@ -1,0 +1,31 @@
+/* frontend/src/components/admin/Login.css */
+.login-container {
+    display: flex;
+    height: 100vh; /* Full height of the viewport */
+  }
+  
+  .login-image {
+    flex: 1; /* Take up half of the space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa; /* Optional: background color */
+  }
+  
+  .login-image img {
+    max-width: 100%; /* Responsive image */
+    height: auto; /* Maintain aspect ratio */
+  }
+  
+  .login-form {
+    flex: 1; /* Take up half of the space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card {
+    width: 100%; /* Full width of the form container */
+    max-width: 400px; /* Optional: limit the max width */
+    padding: 20px; /* Padding inside the card */
+  }
