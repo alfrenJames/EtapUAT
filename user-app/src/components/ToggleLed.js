@@ -4,7 +4,7 @@ import { ref as firebaseRef, onValue, set } from 'firebase/database'; // Rename 
 
 const ToggleLed = forwardRef((_, ref) => {
     const [ledStatus, setLedStatus] = useState("0");
-    const [countdown, setCountdown] = useState(0); // Add state for countdown
+    const [countdown, setCountdown] = useState(300); // Add state for countdown
     const ledRef = useRef(); // Create a ref for the LED component
 
     useEffect(() => {
@@ -17,7 +17,7 @@ const ToggleLed = forwardRef((_, ref) => {
 
     useEffect(() => {
         if (ledStatus === "1") {
-            setCountdown(60); // Set countdown to 5 minutes (300 seconds)
+            setCountdown(300); // Set countdown to 5 minutes (300 seconds)
         } else {
             setCountdown(0); // Reset countdown if ledStatus is not "1"
         }
@@ -28,7 +28,7 @@ const ToggleLed = forwardRef((_, ref) => {
             const timer = setInterval(() => {
                 setCountdown(prev => {
                     if (prev === 1) {
-                        setLedStatus("0"); // Set ledStatus to "0" when countdown reaches 0
+                        // setLedStatus("0"); // Set ledStatus to "0" when countdown reaches 0
                         toggleLed();
                         return 0; // Stop countdown
                     }
@@ -41,8 +41,11 @@ const ToggleLed = forwardRef((_, ref) => {
     }, [countdown]);
 
     const toggleLed = () => {
-        const newStatus = ledStatus === "1" ? "0" : "1";
-        set(firebaseRef(database, 'Led1Status'), newStatus); // Use the renamed ref
+        set(firebaseRef(database, 'Led1Status'), "1"); // Use the renamed ref
+    };
+
+    const toggleLedOff = () => {
+        set(firebaseRef(database, 'Led1Status'), "0"); // Use the renamed ref
     };
 
     // Expose the toggleLed function to parent components
@@ -52,9 +55,6 @@ const ToggleLed = forwardRef((_, ref) => {
 
     return (
         <div className='d-flex flex-column align-items-center' ref={ledRef}>
-            <div className={`alert ${ledStatus === "1" ? "alert-success" : "alert-danger"} w-50 text-center`}>
-                {ledStatus === "1" ? "Unit is On" : "Unit is OFF"}
-            </div>
             <div>
                 {ledStatus === "1" && (
                     <>
@@ -65,14 +65,20 @@ const ToggleLed = forwardRef((_, ref) => {
                             </div>
                         )}
                         {countdown === 0 && ( // Message when countdown reaches zero
-                            <div className="alert alert-danger">
+                            <section>
+                                <div className="alert alert-info">
+                                Thank you for Renting!  
+                                </div>
+                                <div className="alert alert-danger">
                                 The unit will turn off now.
-                            </div>
+                                </div>
+                            </section>
+                            
                         )}
                     </>
                 )}
             </div>
-            <button className="btn btn-primary" onClick={toggleLed} style={{ display: ledStatus === "1" ? 'block' : 'none' }}>
+            <button className="btn btn-primary" onClick={toggleLedOff} style={{ display: ledStatus === "1" ? 'block' : 'none' }}>
                 Park the Unit
             </button>
         </div>

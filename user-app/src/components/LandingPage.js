@@ -255,7 +255,7 @@ const LandingPage = ({ onLogin }) => {
                             <span className="section-subtitle about__initial">About us</span>
                             <h2 className="section-title about__initial">We-Tap is a group of dedicated students</h2>
                             <p className="about__description">
-                                working together to make a positive impact. Our goal is to use our combined skills and experience to create an improved innovation of e-bike to provide transportation inside the school campus with the goal of reducing carbon footprints by utilizing practical solutions for improved processes, and to achieve great results. We believe in teamwork, innovation, and always striving to do better.
+                                Working together to make a positive impact. Our goal is to use our combined skills and experience to create an improved innovation of e-bike to provide transportation inside the school campus with the goal of reducing carbon footprints by utilizing practical solutions for improved processes, and to achieve great results. We believe in teamwork, innovation, and always striving to do better.
                             </p>
                             <a href="#" className="button">Learn More</a>
                         </div>

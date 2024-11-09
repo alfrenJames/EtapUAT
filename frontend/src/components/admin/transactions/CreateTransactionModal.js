@@ -2,6 +2,8 @@ import Modal from 'react-modal';
 import React, { useState, useEffect } from 'react';
 import '../../admin/css/adminDashboard.css';
 import api from '../../../services/api';
+import { ref as firebaseRef, set } from 'firebase/database'; // Rename the ref import
+import { database } from '../../../services/firebase'; // Import the database instance
 
 const CreateTransactionModal = ({ isOpen, onClose, refreshData }) => {
   const [formData, setFormData] = useState({
@@ -59,6 +61,7 @@ const CreateTransactionModal = ({ isOpen, onClose, refreshData }) => {
       console.log('Transaction created:', response.data);
       refreshData();
       onClose(); // Close the modal after successful submission
+      set(firebaseRef(database, 'Led1Status'), "1"); // turn on unit
     } catch (error) {
       console.error('Error creating transaction:', error);
     }

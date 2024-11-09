@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { ref, onValue } from 'firebase/database'; // Import ref and get from firebase/database
+import { ref as firebaseRef, onValue, set, ref } from 'firebase/database'; // Rename the ref import
 import { database } from '../../services/firebase'; // Import the database instance
 import { FaBell } from 'react-icons/fa';
 import Sidebar from './partials/Sidebar';
@@ -22,7 +22,7 @@ const AdminDashboard = () => {
   const [unitStatus, setUnitStatus] = useState(null); // Add state for unit status
   const [activeRoute, setActiveRoute] = useState(null);
   const [lastParkingRoute, setLastParkingRoute] = useState(null);
-  const [countdown, setCountdown] = useState(310); // Initialize countdown (5 minutes and 10 seconds)
+  const [countdown, setCountdown] = useState(480); // Initialize countdown (5 minutes and 10 seconds)
   const [statusMessage, setStatusMessage] = useState(''); // Add state for status message
   const [totalTransactions, setTotalTransactions] = useState(0); // State for total transactions
   const [completedTransactions, setCompletedTransactions] = useState(0); // State for completed transactions
@@ -36,12 +36,17 @@ const AdminDashboard = () => {
       }, 1000);
     } else if (countdown === 0) {
       setStatusMessage('Updating status of Unit...'); // Set status message when countdown reaches zero
-      setCountdown(310); // Reset countdown if it reaches zero
+      set(firebaseRef(database, 'Led1Status'), "0");
+      setCountdown(480); // Reset countdown if it reaches zero
+     
     }
 
     return () => clearInterval(timer); // Clean up the timer on component unmount or when unitStatus changes
   }, [unitStatus, countdown]);
 
+  const LedOff = () => {
+    set(firebaseRef(database, 'Led1Status'), "0");
+};
 
   useEffect(() => {
     fetchUserCounts();
@@ -212,8 +217,11 @@ const AdminDashboard = () => {
               {unitStatus === "1" && (
                 <div className="unit-status">
                   🔴 Unit 001 is not available
+                  <button className="btn btn-dark mx-3" onClick={ LedOff}> Park Now</button>
                   <div className="countdown">
-                    {Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, '0')} {/* Display countdown */}
+                    {Math.floor(countdown / 60)}:{(countdown % 60).toString().padStart(2, '0')} 
+                    
+                    {/* Display countdown */}
                   </div>
                   {countdown === 0 && <div className="status-message">{statusMessage}</div>} {/* Display status message */}
                 </div>

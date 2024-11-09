@@ -1,15 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api from '../services/api';
 import ToggleLed from './ToggleLed';
+import { database } from '../firebaseConfig'; // Import the database
+import { ref as firebaseRef, onValue, set } from 'firebase/database'; // Rename the ref import
 
 const StartRentModal = ({ user, onClose, onSuccess, dashboard }) => {
     const [selectedUnit, setSelectedUnit] = useState('');
+    const [ledStatus, setLedStatus] = useState("0");
     const [selectedRoute, setSelectedRoute] = useState('');
     const [units, setUnits] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [countdown, setCountdown] = useState(300); // 5 minutes in seconds
     const toggleLedRef = useRef();
+
+    //check if unit is on or off
+    useEffect(() => {
+        const ledRefDb = firebaseRef(database, 'Led1Status'); // Use the renamed ref
+        onValue(ledRefDb, (snapshot) => {
+            const status = snapshot.val();
+            setLedStatus(status);
+        });
+    }, []);
 
     useEffect(() => {
         const fetchAvailableUnits = async () => {
@@ -64,7 +76,7 @@ const StartRentModal = ({ user, onClose, onSuccess, dashboard }) => {
                 }
             });
 
-            console.log('Transaction successful:', response.data);
+            //console.log('Transaction successful:', response.data);
             setCountdown(300); // Reset countdown to 5 minutes
             startCountdown(); // Start the countdown
             toggleLedRef.current.toggleLed(); // Call toggleLed when rental starts
@@ -124,7 +136,7 @@ const StartRentModal = ({ user, onClose, onSuccess, dashboard }) => {
                 <div className="modal-content">
                     <div className="modal-header bg-primary text-white">
                         <h5 className="modal-title">Start Rental</h5>
-                        <button type="button" className="btn-close btn-close-white" onClick={onClose}></button>
+                        <button type="button" className="btn-close btn-close-white" onClick={onClose} disabled={ledStatus==="1"}></button>
                     </div>
                     <div className="modal-body">
                         {error && <div className="alert alert-danger">{error}</div>}
@@ -191,6 +203,7 @@ const StartRentModal = ({ user, onClose, onSuccess, dashboard }) => {
                                     className="btn btn-outline-secondary"
                                     onClick={onClose}
                                     disabled={loading}
+                                    style={{ display: ledStatus === "1" ? 'none' : 'block' }}
                                 >
                                     Cancel
                                 </button>

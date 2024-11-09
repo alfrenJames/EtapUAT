@@ -103,7 +103,7 @@ const NotificationTable = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="3" className="text-center">🤔Loading...</td>
+                  <td colSpan="12" className="text-center">🤔Loading...</td>
                 </tr>
               ) : notifications.length > 0 ? (
                 notifications.map(notification => (

@@ -5,9 +5,12 @@ import api from '../services/api';
 import BuyCreditsModal from './BuyCreditModal';
 import PaymentCreditModal from './PaymentCreditModal';
 import StartRentModal from './StartRentModal';
+import { database } from '../firebaseConfig'; // Import the database
+import { ref as firebaseRef, onValue, set } from 'firebase/database'; // Rename the ref import
 
 const UserDashboard = ({ user, onLogout }) => {
     const { userId } = useParams();
+    const [ledStatus, setLedStatus] = useState("0");
     const navigate = useNavigate();
     const [dashboardData, setDashboardData] = useState(null);
     const [notifications, setNotifications] = useState([]);
@@ -15,6 +18,15 @@ const UserDashboard = ({ user, onLogout }) => {
     const [updateCredit, setUpdateCredit] = useState(null);
     const [paymentCredit, setPaymentCredit] = useState(null);
     const [showStartRent, setShowStartRent] = useState(false);
+
+    //check if unit is on or off
+    useEffect(() => {
+        const ledRefDb = firebaseRef(database, 'Led1Status'); // Use the renamed ref
+        onValue(ledRefDb, (snapshot) => {
+            const status = snapshot.val();
+            setLedStatus(status);
+        });
+    }, []);
 
     const fetchDashboardData = async () => {
         setLoading(true);
@@ -33,6 +45,14 @@ const UserDashboard = ({ user, onLogout }) => {
                     Authorization: `Bearer ${user.token}`,
                 },
             });
+
+            // Fetch units
+            const unitResponse = await api.get(`/units`, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            });
+
             const transactions = transactionsResponse.data.count;
 
             // Fetch open notifications
@@ -164,13 +184,17 @@ const UserDashboard = ({ user, onLogout }) => {
                                         <small className="opacity-75">Rides Completed</small>
                                     </div>
                                 </div>
+                                
 
                                 {/* Action Buttons */}
                                 <div className="d-grid gap-2">
+                                    <div className={`alert ${ledStatus === "1" ? "alert-warning" : "alert-info"} w-100 text-center`}>
+                                    {ledStatus === "1" ? "Please wait Unit is not avalailable" : "Unit is Available"}
+                                    </div>
                                     <button 
                                         className="btn btn-light btn-lg mb-3"
                                         onClick={handleStartRent}
-                                        disabled={dashboardData.creditRide <= 0}
+                                        disabled={dashboardData.creditRide <= 0 || ledStatus === "1"}
                                     >
                                         🚲 Start Rent
                                     </button>

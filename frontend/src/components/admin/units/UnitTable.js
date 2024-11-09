@@ -127,11 +127,11 @@ const UnitTable = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="6" className="text-center">Loading...</td>
+                <td colSpan="12" className="text-center">🤔Loading...</td>
               </tr>
             ) : error ? (
               <tr>
-                <td colSpan="6" className="text-center alert alert-danger">{error}</td>
+                <td colSpan="12" className="text-center alert alert-danger">{error}</td>
               </tr>
             ) : filteredUnits.length > 0 ? (
               filteredUnits.map((unit, index) => (

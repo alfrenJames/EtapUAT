@@ -103,7 +103,7 @@ const EditUser = ({ user, onClose, onUpdate }) => {
               </div>
               <div className="mb-3">
                 <label htmlFor="creditRide" className="form-label">Credit Ride</label>
-                <input type="number" className="form-control" id="creditRide" name="creditRide" value={formData.creditRide} onChange={handleChange} required  disabled/>
+                <input type="number" className="form-control" id="creditRide" name="creditRide" value={formData.creditRide} onChange={handleChange} required/>
               </div>
               <div className="mb-3">
                 <label htmlFor="status" className="form-label">Status</label>
