@@ -6,7 +6,7 @@ import BuyCreditsModal from './BuyCreditModal';
 import PaymentCreditModal from './PaymentCreditModal';
 import StartRentModal from './StartRentModal';
 import { database } from '../firebaseConfig'; // Import the database
-import { ref as firebaseRef, onValue, set } from 'firebase/database'; // Rename the ref import
+import { ref as firebaseRef, onValue } from 'firebase/database'; // Rename the ref import
 
 const UserDashboard = ({ user, onLogout }) => {
     const { userId } = useParams();
@@ -14,6 +14,7 @@ const UserDashboard = ({ user, onLogout }) => {
     const navigate = useNavigate();
     const [dashboardData, setDashboardData] = useState(null);
     const [notifications, setNotifications] = useState([]);
+    const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [updateCredit, setUpdateCredit] = useState(null);
     const [paymentCredit, setPaymentCredit] = useState(null);
@@ -62,6 +63,14 @@ const UserDashboard = ({ user, onLogout }) => {
                 },
             });
 
+            // Fetch open paymentTransactions
+            const userPaymentTransactionResponse = await api.get(`/transaction/user/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${user.token}`,
+                },
+            });
+
+            setTransactions(userPaymentTransactionResponse.data);
             setNotifications(notificationsResponse.data);
             setDashboardData({
                 ...userData,
@@ -126,6 +135,9 @@ const UserDashboard = ({ user, onLogout }) => {
     }
 
     if (!user || !dashboardData) {
+        localStorage.removeItem('userData');
+        onLogout();
+        navigate('/');
         return <div>User not found</div>;
     }
 
@@ -148,7 +160,7 @@ const UserDashboard = ({ user, onLogout }) => {
             <div className="row">
                 <div className="ps-lg-5 ps-sm-4 py-4 pe-3 col-md-12 d-flex flex-row align-items-center font-16 purple-color-2">
                     <div className="logo me-auto">
-                        <img src='/assets/img/Etap.png' alt="logo" style={{ cursor: 'pointer' }} onClick={handleRefresh}/>
+                        <img src='https://i.ibb.co/Sm49mFT/ETap.png' alt="logo" style={{ cursor: 'pointer' }} onClick={handleRefresh}/>
                     </div>
                     <p className='mx-4'>Hi! <span>{user.firstName}</span></p>
                     <button className="btn mx-4 mt-3" type="button" onClick={handleLogout}>
